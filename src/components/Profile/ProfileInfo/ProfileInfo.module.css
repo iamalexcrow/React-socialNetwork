@@ -5,3 +5,8 @@ img {
 .descriptionBlock {
   padding: 10px;
 }
+
+.ava {
+  width: 200px;
+  border-radius: 100px;
+}

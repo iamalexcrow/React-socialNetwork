@@ -1,26 +1,50 @@
-import react from 'react';
-import s from './Dialogs.module.css';
-// import { NavLink } from 'react-router-dom';
-import DialogItem from './DialogItem/DialogItem';
-import Message from './Message/Message';
-import { sendMessageCreator, updateNewMessageBodyCreator} from '../../redux/dialogsReducer';
+import React from 'react';
+import { sendMessageCreator  } from '../../redux/dialogsReducer';
 import Dialogs from './Dialogs';
+import {connect} from 'react-redux';
+import {withAuthReddirect} from '../../hoc/WithAuthReddirect'
+import { compose } from 'redux';
+// const DialogsContainer = () => {
 
-const DialogsContainer = (props) => {
-    
-    let state = props.store.getState().dialogsPage;
+//     return <StoreContext.Consumer>
+//         {store => {
+//             let onSendMessageClick = () => {
+//                 store.dispatch(sendMessageCreator());
+//             }
+//             let onNewMessageChange = (body) => {
+//                 store.dispatch(updateNewMessageBodyCreator(body));
+//             }
 
-    let onSendMessageClick = () => {
-        props.store.dispatch(sendMessageCreator());
-    }
+//             return <Dialogs updateNewMessageBody={onNewMessageChange}
+//                 sendMessage={onSendMessageClick}
+//                 dialogsPage={store.getState().dialogsPage} />
+//         }
+//         }
+//     </StoreContext.Consumer>
+// }
 
-    let onNewMessageChange = (body) => {
-        props.store.dispatch(updateNewMessageBodyCreator(body));
-    } 
-    
-    return (
-        <Dialogs updateNewMessageBody={onNewMessageChange} sendMessage={onSendMessageClick} dialogsPage={state}/>
-    )
+let mapStateToProps = (state) => {
+ return {
+    dialogsPage: state.dialogsPage
+ }
 }
 
-export default DialogsContainer;
+let mapDispatchToProps = (dispatch)=> {
+ return {
+    sendMessage: (newMessageBody)=> {
+        dispatch(sendMessageCreator(newMessageBody));
+        
+    }
+  }
+}
+
+
+// let AuthRedirectComponent = withAuthReddirect(Dialogs);
+
+// const DialogsContainer = connect(mapStateToProps,mapDispatchToProps)(AuthRedirectComponent);
+
+export default compose(
+  connect(mapStateToProps,mapDispatchToProps),
+  withAuthReddirect
+  )(Dialogs);
+  

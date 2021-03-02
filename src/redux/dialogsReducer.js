@@ -1,4 +1,3 @@
-const UPDATE_NEW_MESSAGE_BODY = 'UPDATE-NEW-MESSAGE-BODY';
 const SEND_MESSAGE = 'SEND_MESSAGE';
 
 let initialState = {
@@ -18,34 +17,27 @@ let initialState = {
               {id:4, name: "Chuvachelo"}, 
               {id:5, name: "Krasauchik"}, 
               {id:6, name: "Valeronchik"}  
-            ],
-          newMessageBody: ""
+            ]
       }
 
 const dialogsReducer = (state = initialState, action) => {
+
     switch (action.type) {
-        case UPDATE_NEW_MESSAGE_BODY:
-            state.newMessageBody = action.body; //хер понятно, но вызывается ререндеринг страницы с новым элементом
-            return state;
-        case SEND_MESSAGE:
-            let body = state.newMessageBody;
-            state.newMessageBody = '';
-            state.messages.push({
-                id: 6,
-                message: body
-            });
-            return state;
+
+        case SEND_MESSAGE: {
+            let body = action.newMessageBody;
+           return {
+                ...state,
+                messages: [...state.messages, { id: 7, message: body }] 
+            };
+        }
+
         default:
             return state;
     }
 }
 
 
-export const sendMessageCreator = () => ({type: SEND_MESSAGE });
-
-export const updateNewMessageBodyCreator = (text) => ({
-  type: UPDATE_NEW_MESSAGE_BODY,
-  body: text
-});
+export const sendMessageCreator = (newMessageBody) => ({type: SEND_MESSAGE, newMessageBody });
 
 export default dialogsReducer;
